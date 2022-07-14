@@ -20,13 +20,15 @@ create_disk() {
 }
 
 exec_docker() {
- docker run -it --privileged \
+ docker run -it --read-only --privileged \
     -v /dev/loop0:/dev/loop0 \
     -v $here:/code \
     ubuntu /code/start.sh test_1
 }
 
 test_1() {
+  echo "# Wring to read-only file system -> should fail (Expected output: Read-only file system)"
+  echo x > /forbidden
   mkdir /data
   mount /dev/loop0 /data
   df -h /data
