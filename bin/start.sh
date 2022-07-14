@@ -29,15 +29,14 @@ exec_docker() {
 test_1() {
   echo "# Wring to read-only file system -> should fail (Expected output: Read-only file system)"
   echo x > /forbidden
-  mkdir /data
-  mount /dev/loop0 /data
-  df -h /data
+  mount /dev/loop0 /mnt
+  df -h /mnt
   echo "#Writing 32MB -> should work."
-  dd if=/dev/zero of=/data/testfile bs=1M count=32 oflag=direct
-  df -h /data
+  dd if=/dev/zero of=/mnt/testfile bs=1M count=32 oflag=direct
+  df -h /mnt
   echo "#Writing 64MB -> should fail (Expected output: No space left on device)" 
-  dd if=/dev/zero of=/data/testfile bs=1M count=64 oflag=direct
-  df -h /data
+  dd if=/dev/zero of=/mnt/testfile bs=1M count=64 oflag=direct
+  df -h /mnt
 }
 
 opt=$1
